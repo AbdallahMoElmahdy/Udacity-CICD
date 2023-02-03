@@ -10,7 +10,7 @@ jobs:
       - checkout
       - run: echo "hello world" > output.txt
       - persist_to_workspace:
-          root: ~/
+          root: /home/circleci
           paths:
             - output.txt
 
@@ -20,11 +20,11 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ~/
+          at: /home/circleci
       - run:
           name: 'print output file'
           command: |
-            cat ~/output.txt
+            cat /home/circleci/output.txt
 
 workflows:
   print-sharingFile-workflow:
