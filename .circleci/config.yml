@@ -2,24 +2,19 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
-executors:
-  docker-excutor:
-    docker:
-      - image: circleci/node:13.8.0
-
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
   print_hello:
-    excutor: docker-excutor
+    docker:
+      - image: circleci/node:13.8.0
     steps:
-      - checkout
       - run: echo "hello"
 
   print_world:
-    excutor: docker-excutor
+    docker:
+      - image: circleci/node:13.8.0
     steps:
-      - checkout
       - run: echo "World"
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
