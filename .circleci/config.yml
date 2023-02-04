@@ -9,30 +9,16 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - run: echo "hello"
+      - run: return 1
 
-  print_world:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - run: echo "World"
-
-  print_name:
-    docker:
-      - image: cimg/base:2020.01
-    steps:
-      - checkout
       - run:
-          name: 'echo an env var that is part of our project'
-          command: |
-            echo $MY_NAME
+          name: 'echo fail'
+          command: echo "pipeline fail"
+          when: on_fail
+
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  print-hello-world-workflow:
+  print-hello-fail-workflow:
     jobs:
       - print_hello
-      - print_world:
-          requires:
-            - print_hello
-      - print_name
