@@ -5,34 +5,26 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  print_hello:
+  create_infrastructure:
     docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - run: echo "hello"
-
-  print_world:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - run: echo "World"
-
-  print_name:
-    docker:
-      - image: cimg/base:2020.01
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints: ["b4:b1:e3:d4:6c:82:68:02:11:8a:7a:c3:f9:0d:84:b4"]
+
       - run:
-          name: 'echo an env var that is part of our project'
+          name: install ansible
           command: |
-            echo $MY_NAME
+            apk add --update ansible
+
+      - run:
+          name: Run Playbook and Configure server
+          command: |
+            ansible-playbook -i inventory.txt main-remote.yml
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  print-hello-world-workflow:
+  create_infrastructure-workflow:
     jobs:
-      - print_hello
-      - print_world:
-          requires:
-            - print_hello
-      - print_name
+      - create_infrastructure
